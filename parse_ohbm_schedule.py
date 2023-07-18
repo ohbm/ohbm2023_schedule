@@ -61,10 +61,10 @@ def main():
             events[i]["description"] = f"{name}\n\n{events[i]['url']}" 
 
             # Uncomment to fetch the session description
-            # if events[i]["url"]:
-                # content = requests.get(events[i]["url"]).content
-                # description_soup = BeautifulSoup(content, "html.parser")
-                # events[i]["description"] = events[i]["url"]
+            if events[i]["url"]:
+                content = requests.get(events[i]["url"]).content
+                description_soup = BeautifulSoup(content, "html.parser")
+                events[i]["description"] = str(description_soup.body).replace('\n', '')
 
             e = Event(
                 name=events[i]["name"],
@@ -83,7 +83,7 @@ def main():
         soup = soup.prettify()
         f.write(soup)
 
-    with open("OHBM_2023.ics", "w") as f:
+    with open("OHBM_2023.ics", "w", encoding="utf-8") as f:
         f.writelines(c.serialize_iter())
 
 
